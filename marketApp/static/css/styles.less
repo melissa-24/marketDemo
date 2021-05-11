@@ -1,0 +1,30 @@
+.flexcolumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexrow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background-color: green;
+    .flexcolumn();
+    
+    header {
+        border: 3px solid black;
+        padding: 1em;
+        .flexcolumn();
+        background-image: url('/crochetApp/static/images/honeycombBG.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        min-width: 500px;
+        min-height: 200px;
+        background-color: #ffca0a67;
+    }
+}
