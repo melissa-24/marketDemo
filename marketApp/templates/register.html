@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
+</head>
+<body>
+    <header>
+        <h1>Welcome to The Market Place</h1>
+        <p>Please register to see our products or add your own</p>
+        <p>Already have an account? <a href='/'>Sign In</a></p>
+        <form action='/register/' method='post'>
+            {% csrf_token %}
+            <section class='row'>
+                <label for='firstName'>First Name:</label>
+                <input type='text' name='firstName' id='firstName'>
+            </section>
+            <section class='row'>
+                <label for='lastName'>Last Name:</label>
+                <input type='text' name='lastName' id='lastName'>
+            </section>
+            <section class='row'>
+                <label for='username'>Username:</label>
+                <input type='text' name='username' id='username'>
+            </section>
+            <section class='row'>
+                <label form='email'>Email Address:</label>
+                <input type='email' name='email' id='email'>
+            </section>
+            <section class='row'>
+                <label for='password'>Password:</label>
+                <input type='password' name='password' id='password'>
+            </section>
+            <section class='row'>
+                <label for='confirm'>Confirm Password</label>
+                <input type='password' name='confirm' id='confirm'>
+            </section>
+            <button>Submit and Login</button>
+        </form>
+    </header>
+    <footer>
+        {% for foot in footer %}
+        <p>{{foot}}</p>
+        {% endfor %}
+        <a href='/admin/'><img src="{% static 'images/Capture.PNG' %}" /></a>
+    </footer>
+</body>
+</html>

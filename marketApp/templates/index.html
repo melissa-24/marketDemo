@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Market Place</title>
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Crafts Market Place</h1>
+        <p>Please login to see our products</p>
+        <p>Don't have an account? <a href='signup/'>Sign Up</a></p>
+        {% if messages %}
+        <section class='messages'>
+            {% for message in messages %}
+            <h3 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+            {% endfor %}
+        </section>
+        {% endif %}
+        <form action='/login/' method='post'>
+            {% csrf_token %}
+            <section class='row'>
+                <label for='username'>Username</label>
+                <input name='username' id='username' type='text'>
+            </section>
+            <section class='row'>
+                <label for='password'>Password</label>
+                <input name='password' id='password' type='password'>
+            </section>
+            <button>Sign In</button>
+        </form>
+    </header>
+    <footer>
+        {% for foot in footer %}
+        <p>{{foot}}</p>
+        {% endfor %}
+        <a href='admin/'><img src="{% static 'images/Capture.PNG' %}" /></a>
+    </footer>
+</body>
+</html>

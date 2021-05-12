@@ -24,7 +24,7 @@ body header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url('/crochetApp/static/images/honeycombBG.png');
+  background-image: url('/marketApp/static/images/honeycombBG.png');
   background-repeat: no-repeat;
   background-position: center;
   min-width: 500px;
