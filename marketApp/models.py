@@ -43,10 +43,22 @@ class User(models.Model):
     userCreatedAt = models.DateTimeField(auto_now_add=True)
     userUpdatedAt = models.DateTimeField(auto_now=True)
 
+class ShopManager(models.Manager):
+    def validate(self, form):
+        errors = {}
+        shopNameCheck = self.filter(shopName=form['shopName'])
+        if shopNameCheck:
+            errors['shopName'] = 'Shop Name already in use'
+
 class Shop(models.Model):
     shopName = models.CharField(max_length=45)
     shopDescription = models.TextField()
     shopOwner = models.ForeignKey(User, related_name='store', on_delete=models.CASCADE)
+
+    objects = ShopManager()
+
+    shopCreatedAt = models.DateTimeField(auto_now_add=True)
+    shopUpdatedAt = models.DateTimeField(auto_now=True)
 
 class Product(models.Model):
     itemName = models.CharField(max_length=45)
@@ -56,6 +68,18 @@ class Product(models.Model):
     itemCount = models.IntegerField()
     itemShop = models.ForeignKey(Shop, related_name='theShop', on_delete=models.CASCADE)
 
+class CatManager(models.Manager):
+    def validate(self, form):
+        errors = {}
+        catNameCheck = self.filter(catName=form['catName'])
+        if catNameCheck:
+            errors['catName'] = 'Category already created'
+
 class Category(models.Model):
     catName = models.CharField(max_length=45)
     assignedCat = models.ManyToManyField(Product, related_name='categories')
+
+    objects = CatManager()
+
+    catCreatedAt = models.DateTimeField(auto_now_add=True)
+    catUpdatedAt = models.DateTimeField(auto_now=True)
