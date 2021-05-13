@@ -32,11 +32,16 @@ class UserManager(models.Manager):
         return errors
 
 class User(models.Model):
+    TYPE = (
+        ('O', 'Owner'),
+        ('C', 'Customer'),
+    )
     firstName = models.CharField(max_length=45)
     lastName = models.CharField(max_length=45)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
+    acctType = models.CharField(max_length=1, choices=TYPE)
 
     objects = UserManager()
 
@@ -66,7 +71,7 @@ class Product(models.Model):
     itemPrice = models.CharField(max_length=45)
     itemImg = models.CharField(max_length=255)
     itemCount = models.IntegerField()
-    itemShop = models.ForeignKey(Shop, related_name='theShop', on_delete=models.CASCADE)
+    itemShop = models.ForeignKey(Shop, related_name='theShop', on_delete=models.CASCADE, blank=True)
 
 class CatManager(models.Manager):
     def validate(self, form):

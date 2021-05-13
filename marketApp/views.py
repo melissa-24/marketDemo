@@ -54,7 +54,8 @@ def register(request):
         lastName = request.POST['lastName'],
         email = request.POST['email'],
         username = request.POST['username'],
-        password = hashedPw
+        password = hashedPw,
+        acctType = request.POST['acctType'],
     )
     request.session['user_id'] = newUser.id
     return redirect('/dashboard/')
@@ -76,12 +77,19 @@ def dashboard(request):
     context = {
         'footer': FOOTER,
         'user': user,
+        'allProd': Product.objects.all().values()
     }
     return render(request, 'dashboard.html', context)
 
 # -------User Profile Landing Page-------
 def profile(request):
-    pass
+    if 'user_id' not in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'footer': FOOTER
+    }
+    return render(request, 'profile.html', context)
 
 # -------Categories Landing Page-------
 def categories(request):
