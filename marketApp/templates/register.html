@@ -13,7 +13,9 @@
     <header>
         <h1>Welcome to The Market Place</h1>
         <p>Please register to see our products or add your own</p>
-        <p>Already have an account? <a href='/'>Sign In</a></p>
+        <nav>
+            <p>Already have an account? <a href='/'>Sign In</a></p>
+        </nav>
         <form action='/register/' method='post'>
             {% csrf_token %}
             <section class='row'>

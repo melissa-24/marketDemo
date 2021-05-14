@@ -77,6 +77,7 @@ def dashboard(request):
         return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
     shops = Shop.objects.all().values()
+    ownerShops = Shop.objects.filter(user_id=request.session['user_id'])
     # print(user.acct_id)
     if user.acct_id == 1:
         context = {
@@ -89,9 +90,7 @@ def dashboard(request):
         context = {
             'footer': FOOTER,
             'user': user,
-            'shops':shops,
-            'allProd': Product.objects.all().values(),
-            'users': User.objects.filter(acct_id=2),
+            'ownerShops': ownerShops,
         }
         return render(request, 'ownerDash.html', context)
 
@@ -105,7 +104,6 @@ def shops(request):
         'footer': FOOTER,
         'user': user,
         'shops':shops,
-        'allProd': Product.objects.all().values(),
         'users': User.objects.filter(acct_id=2),
     }
     return render(request, 'shops.html', context)
@@ -122,12 +120,25 @@ def createShop(request):
     return redirect('/profile/shops/')
 
 # -------View Shop Landing Page-------
-def viewShop(request):
-    pass
+def viewShop(request,shop_id):
+    user = User.objects.get(id=request.session['user_id'])
+    oneShop = Shop.objects.get(id=shop_id)
+    context = {
+        'editShop': oneShop,
+        'user': user,
+        'users': User.objects.filter(acct_id=2)
+    }
+    return render(request, 'editShop.html', context)
 
 # -------Update Shop Route-------
-def updateShop(request):
-    pass
+def updateShop(request, shop_id):
+    toUpdate = Shop.objects.get(id=shop_id)
+    toUpdate.shopName = request.POST['shopName']
+    toUpdate.shopDescription = request.POST['shopDescription']
+    toUpdate.user_id = request.POST['user_id']
+    toUpdate.save()
+
+    return redirect('/dashboard/')
 
 # -------Delete Shop Route-------
 def deleteShop(request):

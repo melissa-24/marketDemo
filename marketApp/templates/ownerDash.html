@@ -15,11 +15,17 @@
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
-            <a href='/profile/shops'>Shops</a>
+            <a href='/shop/'>Shops</a>
         </nav>
     </header>
     <div class='main'>
-        
+        <!-- {{user}} -->
+        <!-- {{ownerShops}} -->
+        {% for owner in ownerShops %}
+        {{owner.shopName}}
+        {{owner.shopDescription}}
+        <a href='/shop/{{owner.id}}/editShop/'>Edit Shop</a>
+        {% endfor %}
     </div>
     <footer>
         {% for foot in footer %}

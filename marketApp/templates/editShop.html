@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{editShop.shopName}}</title>
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
+</head>
+<body>
+    <header>
+        <h3>{{editShop.shopName}}</h3>
+        <nav>
+            <a href='/logout/'>Log Out</a>
+            <a href='/dashboard/'>Dashboard</a>
+            <a href='/shop/'>Shops</a>
+        </nav>
+    </header>
+    <div class='main'>
+        <form action='/shop/{{editShop.id}}/updateShop/' method='post'>
+            {% csrf_token %}
+            <section>
+                <label for='shopName'>Shop Name: </label>
+                <input type='text' name='shopName' id='shopName' value='{{editShop.shopName}}'>
+            </section>
+            <section>
+                <label for='shopDescription'>Shop Description: </label>
+                <textarea name='shopDescription' id='shopDescription' value='{{editShop.shopDescription}}'></textarea>
+            </section>
+            <section style="display: none;">
+                <label for='user_id'>Shop Owner: {{user.firstName}} {{user.lastName}}</label>
+                <input type='text' name='user_id' id='user_id' value='{{user.id}}'>
+            </section>
+            <button>Update Shop</button>
+        </form>
+    </div>
+</body>
+</html>

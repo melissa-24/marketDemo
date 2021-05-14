@@ -15,7 +15,7 @@
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
-            <a href='/profile/shops'>Shops</a>
+            <a href='/shop/'>Shops</a>
         </nav>
     </header>
     <div class='main'>
@@ -32,7 +32,7 @@
         <div class='add'>
             <button class='showShopForm'>Click to Add Your Shop</button>
             <div class='form'>
-                <form action='/profile/createShop/' method='post'>
+                <form action='/shop/createShop/' method='post'>
                     {% csrf_token %}
                     <section>
                         <label for='shopName'>Shop Name: </label>

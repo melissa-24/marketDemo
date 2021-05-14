@@ -25,11 +25,49 @@ body header {
   justify-content: center;
   align-items: center;
   background-image: url('/marketApp/static/images/honeycombBG.png');
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-position: center;
   min-width: 500px;
   min-height: 200px;
   background-color: #ffca0a67;
+}
+body header nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+body header nav a {
+  margin: 1em;
+  color: #000;
+  text-decoration: none;
+  background-color: #008000;
+  border: 3px groove #ffca0a67;
+  padding: 0.5em;
+}
+body header form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
+}
+body header form .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+body header form .row label {
+  margin: 1em;
+}
+body header form button {
+  margin: 1em;
+  color: #000;
+  text-decoration: none;
+  background-color: #008000;
+  border: 3px groove #ffca0a67;
+  padding: 0.5em;
 }
 body .main {
   display: flex;
