@@ -1,6 +1,7 @@
+from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import User, Shop, Category, Product
+from .models import Acct, User, Shop, Category, Product
 import bcrypt
 
 # -------Used for all pages-------
@@ -35,7 +36,8 @@ def login(request):
 # -------Register landing page-------
 def signup(request):
     context = {
-        'footer': FOOTER
+        'footer': FOOTER,
+        'accts': Acct.objects.all()
     }
     return render(request, 'register.html', context)
 
@@ -55,7 +57,7 @@ def register(request):
         email = request.POST['email'],
         username = request.POST['username'],
         password = hashedPw,
-        acctType = request.POST['acctType'],
+        acct_id=request.POST['acct']
     )
     request.session['user_id'] = newUser.id
     return redirect('/dashboard/')
@@ -74,12 +76,62 @@ def dashboard(request):
     if 'user_id' not in request.session:
         return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
+    shops = Shop.objects.all().values()
+    # print(user.acct_id)
+    if user.acct_id == 1:
+        context = {
+            'footer': FOOTER,
+            'user': user,
+            'allProd': Product.objects.all().values(),
+        }
+        return render(request, 'dashboard.html', context)
+    else:
+        context = {
+            'footer': FOOTER,
+            'user': user,
+            'shops':shops,
+            'allProd': Product.objects.all().values(),
+            'users': User.objects.filter(acct_id=2),
+        }
+        return render(request, 'ownerDash.html', context)
+
+# -------Create Shop Landing-------
+def shops(request):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    shops = Shop.objects.all().values()
     context = {
         'footer': FOOTER,
         'user': user,
-        'allProd': Product.objects.all().values()
+        'shops':shops,
+        'allProd': Product.objects.all().values(),
+        'users': User.objects.filter(acct_id=2),
     }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'shops.html', context)
+
+# -------Create Shop Route-------
+def createShop(request):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    Shop.objects.create(
+        shopName=request.POST['shopName'],
+        shopDescription=request.POST['shopDescription'],
+        user_id=request.POST['user'],
+    )
+    return redirect('/profile/shops/')
+
+# -------View Shop Landing Page-------
+def viewShop(request):
+    pass
+
+# -------Update Shop Route-------
+def updateShop(request):
+    pass
+
+# -------Delete Shop Route-------
+def deleteShop(request):
+    pass
 
 # -------User Profile Landing Page-------
 def profile(request):
@@ -109,26 +161,6 @@ def updateCat(request):
 
 # -------Delete Category Route-------
 def deleteCat(request):
-    pass
-
-# -------Shops Landing page-------
-def shops(request):
-    pass
-
-# -------Create Shop Route-------
-def createShop(request):
-    pass
-
-# -------View Shop Landing Page-------
-def viewShop(request):
-    pass
-
-# -------Update Shop Route-------
-def updateShop(request):
-    pass
-
-# -------Delete Shop Route-------
-def deleteShop(request):
     pass
 
 # -------Products Landing Page-------

@@ -13,7 +13,7 @@
 }
 
 body {
-    background-color: green;
+    background-color: #008000;
     .flexcolumn();
     
     header {
@@ -26,5 +26,41 @@ body {
         min-width: 500px;
         min-height: 200px;
         background-color: #ffca0a67;
+    }
+    .main {
+        .flexcolumn();
+
+        .all {
+            .flexrow();
+            align-items: flex-start;
+            flex-wrap: wrap;
+
+            .one {
+                .flexcolumn();
+                background-color: #ffca0a67;
+                border: 3px groove #123812;
+                margin: 1em;
+                padding: 1em;
+            }
+        }
+
+        .add {
+            .flexcolumn();
+
+            .form {
+                display: none;
+                background-color: #ffca0a67;
+                margin: 1em;
+                
+                form {
+                    .flexcolumn();
+                    margin: 1em;
+
+                    section {
+                        margin: .5em;
+                    }
+                }
+            }
+        }
     }
 }

@@ -33,9 +33,11 @@
                 <input type='email' name='email' id='email'>
             </section>
             <section class='row'>
-                <label form='acctType'>Chose Your Account Type:</label>
-                <select name='acctType'>
-                    <option value='accType'>{{acctType}}</option>
+                <label form='acct'>Chose Your Account Type:</label>
+                <select name='acct'>
+                    {% for acct in accts %}
+                    <option value='{{acct.id}}'>{{acct.typeName}}</option>
+                    {% endfor %}
                 </select>
             </section>
             <section class='row'>

@@ -1,6 +1,11 @@
 from django.db import models
 import re
 
+from django.db.models.deletion import CASCADE
+
+class Acct(models.Model):
+    typeName = models.CharField(max_length=20)
+
 class UserManager(models.Manager):
     def validate(self, form):
         errors = {}
@@ -32,16 +37,13 @@ class UserManager(models.Manager):
         return errors
 
 class User(models.Model):
-    TYPE = (
-        ('O', 'Owner'),
-        ('C', 'Customer'),
-    )
+
     firstName = models.CharField(max_length=45)
     lastName = models.CharField(max_length=45)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
-    acctType = models.CharField(max_length=1, choices=TYPE)
+    acct = models.ForeignKey(Acct, related_name='users', on_delete=CASCADE)
 
     objects = UserManager()
 
@@ -58,7 +60,7 @@ class ShopManager(models.Manager):
 class Shop(models.Model):
     shopName = models.CharField(max_length=45)
     shopDescription = models.TextField()
-    shopOwner = models.ForeignKey(User, related_name='store', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='shops', on_delete=models.CASCADE)
 
     objects = ShopManager()
 
@@ -71,7 +73,7 @@ class Product(models.Model):
     itemPrice = models.CharField(max_length=45)
     itemImg = models.CharField(max_length=255)
     itemCount = models.IntegerField()
-    itemShop = models.ForeignKey(Shop, related_name='theShop', on_delete=models.CASCADE, blank=True)
+    shop_id = models.ForeignKey(Shop, related_name='products', on_delete=models.CASCADE, blank=True)
 
 class CatManager(models.Manager):
     def validate(self, form):
