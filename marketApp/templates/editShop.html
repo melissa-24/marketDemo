@@ -16,6 +16,8 @@
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
             <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
         </nav>
     </header>
     <div class='main'>
@@ -27,7 +29,7 @@
             </section>
             <section>
                 <label for='shopDescription'>Shop Description: </label>
-                <textarea name='shopDescription' id='shopDescription' value='{{editShop.shopDescription}}'></textarea>
+                <textarea name='shopDescription' id='shopDescription' value='{{editShop.shopDescription}}'>{{editShop.shopDescription}}</textarea>
             </section>
             <section style="display: none;">
                 <label for='user_id'>Shop Owner: {{user.firstName}} {{user.lastName}}</label>
@@ -35,6 +37,14 @@
             </section>
             <button>Update Shop</button>
         </form>
+        <a href='/shop/{{editShop.id}}/deleteShop/'><button>Delete Shop</button></a>
+        <div class='prods'>
+            Products belonging to {{editShop.shopName}}
+            {% for prod in editShop.prods.all %}
+            {{prod.itemName}}
+            {{prod}}
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>

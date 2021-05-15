@@ -11,14 +11,74 @@
 </head>
 <body>
     <header>
-        <h3>Welcome, {{user.firstName}} {{user.lastName}} to The Crafts Market Place</h3>
+        <h3>The Crafts Market Place Products</h3>
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
+            <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
         </nav>
     </header>
     <div class='main'>
-
+        <div class='add'>
+            <button class='showProdForm'>Click to Add Products to your Shop</button>
+            <div class='prodForm'>
+                <form action='/product/createProd/' method='post'>
+                    {% csrf_token %}
+                    <section>
+                        <label for='itemName'>Product Name: </label>
+                        <input type='text' name='itemName' id='itemName'>
+                    </section>
+                    <section>
+                        <label for='itemDescription'>Product Description: </label>
+                        <textarea name='itemDescription' id='itemDescription'></textarea>
+                    </section>
+                    <section>
+                        <label for='itemPrice'>Price: </label>
+                        <input type='text' name='itemPrice' id='itemPrice'>
+                    </section>
+                    <section>
+                        <label for='itemImg'>Link to Product Image: </label>
+                        <input type='text' name='itemImg' id='itemImg'>
+                    </section>
+                    <section>
+                        <label for='itemCount'># of available products: </label>
+                        <input type='number' name='itemCount' id='itemCount'>
+                    </section>
+                    <section style="display: none;">
+                        <label for='user'>Shop Owner: {{user.firstName}} {{user.lastName}}</label>
+                        <input type='text' name='theOwner' id='theOwner' value='{{user.id}}'>
+                    </section>
+                    <section>
+                        <label for='shop'>Chose the Shop:</label>
+                        <select name='shop'>
+                            {% for shop in user.shops.all %}
+                            <option value='{{shop.id}}'>{{shop.shopName}}</option>
+                            {% endfor %}
+                        </select>
+                    </section>
+                    <!-- <section>
+                        <label for='categories'>Select Categories: </label>
+                        {% for cat in cats %}
+                        <input type='checkbox' name='categories' id='categories' values='{{cat.catName}}'>
+                        <label for='{{cat.id}}'>{{cat.catName}}</label>
+                        {% endfor %}
+                    </section> -->
+                    <button>Add Product</button>
+                </form>
+            </div>
+        </div>
+        <div class='all'>
+            {% for prod in prods %}
+                {{prod.itemName}}
+                {{prod.itemDescription}}
+                ${{prod.itemPrice}}
+                <img src='{{prod.itemImg}}' alt='{{prod.itemName}}' />
+                {{prod.itemCount}}
+            {{prod.categories}}
+            {% endfor %}
+        </div>
     </div>
     <footer>
         {% for foot in footer %}

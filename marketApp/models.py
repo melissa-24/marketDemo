@@ -64,17 +64,6 @@ class Shop(models.Model):
 
     objects = ShopManager()
 
-    shopCreatedAt = models.DateTimeField(auto_now_add=True)
-    shopUpdatedAt = models.DateTimeField(auto_now=True)
-
-class Product(models.Model):
-    itemName = models.CharField(max_length=45)
-    itemDescription = models.TextField()
-    itemPrice = models.CharField(max_length=45)
-    itemImg = models.CharField(max_length=255)
-    itemCount = models.IntegerField()
-    shop_id = models.ForeignKey(Shop, related_name='products', on_delete=models.CASCADE, blank=True)
-
 class CatManager(models.Manager):
     def validate(self, form):
         errors = {}
@@ -84,9 +73,16 @@ class CatManager(models.Manager):
 
 class Category(models.Model):
     catName = models.CharField(max_length=45)
-    assignedCat = models.ManyToManyField(Product, related_name='categories')
+    theUser = models.ForeignKey(User, related_name='categories', on_delete=models.CASCADE)
 
     objects = CatManager()
 
-    catCreatedAt = models.DateTimeField(auto_now_add=True)
-    catUpdatedAt = models.DateTimeField(auto_now=True)
+class Product(models.Model):
+    itemName = models.CharField(max_length=45)
+    itemDescription = models.TextField()
+    itemPrice = models.CharField(max_length=45)
+    itemImg = models.CharField(max_length=255)
+    itemCount = models.IntegerField()
+    theOwner = models.ForeignKey(User, related_name='ownerProducts', on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, related_name='theProducts', on_delete=models.CASCADE, blank=True)
+    categories = models.ManyToManyField('Category', related_name='products')

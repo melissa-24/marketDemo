@@ -98,19 +98,26 @@ body .main .add {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 1em;
 }
-body .main .add .form {
+body .main .add .shopForm,
+body .main .add .catForm,
+body .main .add .prodForm {
   display: none;
   background-color: #ffca0a67;
   margin: 1em;
 }
-body .main .add .form form {
+body .main .add .shopForm form,
+body .main .add .catForm form,
+body .main .add .prodForm form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 1em;
 }
-body .main .add .form form section {
+body .main .add .shopForm form section,
+body .main .add .catForm form section,
+body .main .add .prodForm form section {
   margin: 0.5em;
 }

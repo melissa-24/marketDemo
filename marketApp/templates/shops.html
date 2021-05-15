@@ -11,27 +11,19 @@
 </head>
 <body>
     <header>
-        <h3>Welcome, {{user.firstName}} {{user.lastName}} to The Crafts Market Place</h3>
+        <h3>The Crafts Market Place Shops</h3>
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
             <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
         </nav>
     </header>
     <div class='main'>
-        <div class='all'>
-            {% for user in users %}
-            <div class='one'>
-                <h3>{{user.firstName}}'s Shops</h3>
-                {% for shop in user.shops.all %}
-                    <p>{{shop.shopName}}</p>
-                {% endfor %}
-            </div>
-            {% endfor %}
-        </div>
         <div class='add'>
             <button class='showShopForm'>Click to Add Your Shop</button>
-            <div class='form'>
+            <div class='shopForm'>
                 <form action='/shop/createShop/' method='post'>
                     {% csrf_token %}
                     <section>
@@ -49,6 +41,16 @@
                     <button>Submit New Shop</button>
                 </form>
             </div>
+        </div>
+        <div class='all'>
+            {% for user in users %}
+            <div class='one'>
+                <h3>{{user.firstName}}'s Shops</h3>
+                {% for shop in user.shops.all %}
+                    <p>{{shop.shopName}}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
         </div>
     </div>
     <footer>

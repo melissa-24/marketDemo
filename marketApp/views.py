@@ -1,4 +1,3 @@
-from django.db import models
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Acct, User, Shop, Category, Product
@@ -78,6 +77,8 @@ def dashboard(request):
     user = User.objects.get(id=request.session['user_id'])
     shops = Shop.objects.all().values()
     ownerShops = Shop.objects.filter(user_id=request.session['user_id'])
+    prods = Product.objects.all().values()
+    ownerProds = Product.objects.filter(theOwner_id=request.session['user_id'])
     # print(user.acct_id)
     if user.acct_id == 1:
         context = {
@@ -91,6 +92,7 @@ def dashboard(request):
             'footer': FOOTER,
             'user': user,
             'ownerShops': ownerShops,
+            'ownerProds': ownerProds,
         }
         return render(request, 'ownerDash.html', context)
 
@@ -117,15 +119,19 @@ def createShop(request):
         shopDescription=request.POST['shopDescription'],
         user_id=request.POST['user'],
     )
-    return redirect('/profile/shops/')
+    return redirect('/shops/')
 
 # -------View Shop Landing Page-------
 def viewShop(request,shop_id):
     user = User.objects.get(id=request.session['user_id'])
     oneShop = Shop.objects.get(id=shop_id)
+    cats = Category.objects.all().values()
+    prods = Product.objects.all()
     context = {
         'editShop': oneShop,
         'user': user,
+        'cats': cats,
+        'prods': prods,
         'users': User.objects.filter(acct_id=2)
     }
     return render(request, 'editShop.html', context)
@@ -141,8 +147,11 @@ def updateShop(request, shop_id):
     return redirect('/dashboard/')
 
 # -------Delete Shop Route-------
-def deleteShop(request):
-    pass
+def deleteShop(request, shop_id):
+    toDelete = Shop.objects.get(id=shop_id)
+    toDelete.delete()
+
+    return redirect('/dashboard/')
 
 # -------User Profile Landing Page-------
 def profile(request):
@@ -156,39 +165,90 @@ def profile(request):
 
 # -------Categories Landing Page-------
 def categories(request):
-    pass
+    if 'user_id' not in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    cats = Category.objects.all().values()
+    context = {
+        'footer': FOOTER,
+        'user': user,
+        'cats': cats,
+        'users': User.objects.filter(acct_id=2),
+    }
+    return render(request, 'categories.html', context)
 
 # -------Create Category Route-------
 def createCat(request):
-    pass
-
-# -------View Category Landing Page-------
-def viewCat(request):
-    pass
-
-# -------Update Category Route-------
-def updateCat(request):
-    pass
-
-# -------Delete Category Route-------
-def deleteCat(request):
-    pass
+    if 'user_id' not in request.session:
+        return redirect('/')
+    Category.objects.create(
+        catName=request.POST['catName'],
+        theUser_id=request.POST['theUser'],
+    )
+    return redirect('/category/')
 
 # -------Products Landing Page-------
 def products(request):
-    pass
+    if 'user_id' not in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    prods = Product.objects.all().values()
+    shops = Shop.objects.all().values()
+    cats = Category.objects.all().values()
+    context ={
+        'footer': FOOTER,
+        'user': user,
+        'prods':prods,
+        'shops':shops,
+        'cats': cats,
+        'users': User.objects.filter(acct_id=2),
+    }
+    return render(request, 'products.html', context)
+    
 
 # -------Create Product Route-------
 def createProd(request):
-    pass
+    if 'user_id' not in request.session:
+        return redirect('/')
+    Product.objects.create(
+        itemName=request.POST['itemName'],
+        itemDescription=request.POST['itemDescription'],
+        itemPrice=request.POST['itemPrice'],
+        itemImg=request.POST['itemPrice'],
+        itemCount=request.POST['itemPrice'],
+        theOwner_id=request.POST['theOwner'],
+        shop_id=request.POST['shop'],
+    )
+    return redirect('/product/')
 
 # -------View Product Landing Page-------
-def viewProd(request):
+def viewProd(request, product_id):
+    user = User.objects.get(id=request.session['user_id'])
+    oneProd = Product.objects.get(id=product_id)
+    context = {
+        'editProd': oneProd,
+        'user': user,
+        'users': User.objects.filter(acct_id=2)
+    }
+    return render(request, 'editProducts.html', context)
+
+# -------Add Category to Product Route-------
+def addProdCat(request):
     pass
 
 # -------Update Product Route-------
-def updateProd(request):
-    pass
+def updateProd(request, product_id):
+    toUpdate = Product.objects.get(id=product_id)
+    toUpdate.itemName = request.POST['itemName']
+    toUpdate.itemDescription = request.POST['itemDescription']
+    toUpdate.itemPrice = request.POST['itemPrice']
+    toUpdate.itemImg = request.POST['itemImg']
+    toUpdate.itemCount = request.POST['itemCount']
+    toUpdate.theOwner_id = request.POST['theOwner']
+    toUpdate.shop_id = request.POST['shop']
+    toUpdate.save()
+
+    return redirect('/dashboard/')
 
 # -------Delete Product Route-------
 def deleteProd(request):

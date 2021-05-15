@@ -11,14 +11,44 @@
 </head>
 <body>
     <header>
-        <h3>Welcome, {{user.firstName}} {{user.lastName}} to The Crafts Market Place</h3>
+        <h3>The Crafts Market Place Categories</h3>
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
+            <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
         </nav>
     </header>
     <div class='main'>
-
+        <div class='add'>
+            <button class='showCatForm'>Click to add a New Category</button>
+            <div class='catForm'>
+                <form action='/category/createCat/' method='post'>
+                    {% csrf_token %}
+                    <section>
+                        <label for='catName'>Category: </label>
+                        <input type='text' name='catName' id='catName'>
+                    </section>
+                    <section style="display: none;">
+                        <label for='theUser'>Shop Owner: {{user.firstName}} {{user.lastName}}</label>
+                        <input type='text' name='theUser' id='theUser' value='{{user.id}}'>
+                    </section>
+                    <button>Submit Category</button>
+                </form>
+            </div>
+        </div>
+        <h4>All Categories are available to be used by any Shop Owner, however only the Admin can edit or delete</h4>
+        <div class='all'>
+            {% for user in users %}
+            <div class='one'>
+                <h3>{{user.firstName}}'s Categories</h3>
+                {% for cat in user.categories.all %}
+                    <p>{{cat.catName}}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
     </div>
     <footer>
         {% for foot in footer %}

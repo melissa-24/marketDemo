@@ -11,11 +11,13 @@
 </head>
 <body>
     <header>
-        <h3>Welcome, {{user.firstName}} {{user.lastName}} to the Owner Page</h3>
+        <h3>Welcome, {{user.firstName}} {{user.lastName}} to the your Owner Page</h3>
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
             <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
         </nav>
     </header>
     <div class='main'>
@@ -26,6 +28,12 @@
         {{owner.shopDescription}}
         <a href='/shop/{{owner.id}}/editShop/'>Edit Shop</a>
         {% endfor %}
+        {% for prod in ownerProds %}
+        {{prod.itemName}}
+        {{prod.itemDescription}}
+        <a href='/product/{{prod.id}}/editProd/'>Edit Product</a>
+        {% endfor %}
+        <!-- {{ownerProds}} -->
     </div>
     <footer>
         {% for foot in footer %}
