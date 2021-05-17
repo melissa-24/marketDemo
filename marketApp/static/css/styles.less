@@ -11,6 +11,9 @@
     justify-content: center;
     align-items: center;
 }
+img {
+    max-width: 100px;
+}
 
 body {
     background-color: #008000;
@@ -68,6 +71,10 @@ body {
             .flexrow();
             align-items: flex-start;
             flex-wrap: wrap;
+            button {
+                justify-self: center;
+                align-self: center;
+            }
 
             .one {
                 .flexcolumn();
@@ -76,13 +83,31 @@ body {
                 margin: 1em;
                 padding: 1em;
             }
+            .allProducts, .allShops, .allCats {
+                display: none;
+                background-color: #ffca0a67;
+                margin: 1em;
+
+                .all {
+                    .flexrow();
+                    align-items: flex-start;
+                    flex-wrap: wrap;
+                }
+                .one {
+                    .flexcolumn();
+                    background-color: #ffca0a67;
+                    border: 3px groove #123812;
+                    margin: 1em;
+                    padding: 1em;
+                }
+            }
         }
 
-        .add {
+        .add, .update {
             .flexcolumn();
             margin: 1em;
 
-            .shopForm, .catForm, .prodForm {
+            .shopForm, .catForm, .prodForm, .updateProdForm, .updateProdForm, .addShopForm, .addCatForm {
                 display: none;
                 background-color: #ffca0a67;
                 margin: 1em;
@@ -96,6 +121,22 @@ body {
                     }
                 }
             }
+        }
+        .user {
+            .flexrow();
+            background-color: #0f460fbe;
+    
+            .section {
+                .flexcolumn();
+                margin: 1em;
+
+                img {
+                    max-width: 300px;
+                    border: 8px groove #ffca0a;
+                    border-radius: 40%;
+                }
+            }
+    
         }
     }
 }

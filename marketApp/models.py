@@ -61,6 +61,7 @@ class Shop(models.Model):
     shopName = models.CharField(max_length=45)
     shopDescription = models.TextField()
     user = models.ForeignKey(User, related_name='shops', on_delete=models.CASCADE)
+    # theProducts = models.ManyToManyField(Product, related_name='shop')
 
     objects = ShopManager()
 
@@ -82,7 +83,7 @@ class Product(models.Model):
     itemDescription = models.TextField()
     itemPrice = models.CharField(max_length=45)
     itemImg = models.CharField(max_length=255)
-    itemCount = models.IntegerField()
-    theOwner = models.ForeignKey(User, related_name='ownerProducts', on_delete=models.CASCADE)
-    shop = models.ForeignKey(Shop, related_name='theProducts', on_delete=models.CASCADE, blank=True)
+    itemCount = models.CharField(max_length=45)
+    theOwner = models.ManyToManyField(User, related_name='ownerProducts')
+    shop = models.ManyToManyField(Shop, related_name='theProducts')
     categories = models.ManyToManyField('Category', related_name='products')

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
+</head>
+<body>
+    <header>
+        <h3>Welcome, {{user.firstName}} {{user.lastName}} to the your Owner Dashboard</h3>
+        <nav>
+            <a href='/logout/'>Log Out</a>
+            <a href='/dashboard/'>Dashboard</a>
+            <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
+        </nav>
+    </header>
+    <div class='main'>
+        <!-- {{user}} -->
+        <!-- {{ownerShops}} -->
+        <div class='all'>
+            {% for owner in ownerShops %}
+                <div class='one'>
+                    <h4>{{owner.shopName}}</h4>
+                    <p>{{owner.shopDescription}}</p>
+                    <a href='/shop/{{owner.id}}/editShop/'>Edit Shop</a>
+                        {% for prod in owner.theProducts.all %}
+                            <div class='one'>
+                                <h4>{{prod.itemName}}</h4>
+                                <p>{{prod.itemDescription}}</p>
+                                <p>Currently Available: {{prod.itemCount}}</p>
+                                <img src='{{prod.itemImg}}' alt='{{prod.itemName}}' />
+                                <a href='/product/{{prod.id}}/editProd/'>Edit Product</a>
+                            </div>
+                        {% endfor %}
+                </div>
+            {% endfor %}
+            {% for prod in prods.all %}
+                <div class='one'>
+                    <h4>{{prod.itemName}}</h4>
+                    <p>{{prod.itemDescription}}</p>
+                    <p>Currently Available: {{prod.itemCount}}</p>
+                    <img src='{{prod.itemImg}}' alt='{{prod.itemName}}' />
+                    <a href='/product/{{prod.id}}/editProd/'>Edit Product</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        {% for foot in footer %}
+        <p>{{foot}}</p>
+        {% endfor %}
+        <a href='/admin/'><img src="{% static 'images/Capture.PNG' %}" /></a>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

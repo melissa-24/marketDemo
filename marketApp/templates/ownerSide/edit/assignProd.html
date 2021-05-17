@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>{{editProd.itemName}}</title>
     {% load static %}
     <link rel='stylesheet' href="{% static 'css/styles.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
 </head>
 <body>
     <header>
-        <h3>Welcome, {{user.firstName}} {{user.lastName}} to the your Owner Page</h3>
+        <h3>{{editProd.itemName}}</h3>
         <nav>
             <a href='/logout/'>Log Out</a>
             <a href='/dashboard/'>Dashboard</a>
@@ -21,26 +21,22 @@
         </nav>
     </header>
     <div class='main'>
-        <!-- {{user}} -->
-        <!-- {{ownerShops}} -->
-        {% for owner in ownerShops %}
-        {{owner.shopName}}
-        {{owner.shopDescription}}
-        <a href='/shop/{{owner.id}}/editShop/'>Edit Shop</a>
-        {% endfor %}
-        {% for prod in ownerProds %}
-        {{prod.itemName}}
-        {{prod.itemDescription}}
-        <a href='/product/{{prod.id}}/editProd/'>Edit Product</a>
-        {% endfor %}
-        <!-- {{ownerProds}} -->
+        <div class='update'>
+            <button class='shopAddShopForm'>Click to assign to your Shop</button>
+            <div class='addShopForm'>
+                <form action='/product/{{editProd.id}}/assignShop/' method='post'>
+                    {% csrf_token %}
+                    <label for='shop_id'>Chose the Shop: </label>
+                    <select name='shop_id'>
+                        {% for shop in ownerShops %}
+                            <option value='{{shop.id}}'>{{shop.shopName}}</option>
+                        {% endfor %}
+                    </select>
+                    <button>Add Shop</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <footer>
-        {% for foot in footer %}
-        <p>{{foot}}</p>
-        {% endfor %}
-        <a href='/admin/'><img src="{% static 'images/Capture.PNG' %}" /></a>
-    </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{editProd.itemName}}</title>
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
+</head>
+<body>
+    <header>
+        <h3>{{editProd.itemName}}</h3>
+        <nav>
+            <a href='/logout/'>Log Out</a>
+            <a href='/dashboard/'>Dashboard</a>
+            <a href='/shop/'>Shops</a>
+            <a href='/category/'>Categories</a>
+            <a href='/product/'>Products</a>
+        </nav>
+    </header>
+    <div class='main'>
+        <div class='update'>
+            <button class='showUpdateProdFrom'>Click to update basic Product information</button>
+            <div class='updateProdForm'>
+                <form action='/product/{{editProd.id}}/updateProd/' method='post'>
+                    {% csrf_token %}
+                    <section>
+                        <label for='itemName'>Product Name: </label>
+                        <input type='text' name='itemName' id='itemName' value='{{editProd.itemName}}'>
+                    </section>
+                    <section>
+                        <label for='itemDescription'>Product Description: </label>
+                        <textarea name='itemDescription' id='itemDescription' value='{{editProd.itemDescription}}'>{{editProd.itemDescription}}</textarea>
+                    </section>
+                    <section>
+                        <label for='itemPrice'>Price: </label>
+                        <input type='text' name='itemPrice' id='itemPrice' value='{{editProd.itemPrice}}'>
+                    </section>
+                    <section>
+                        <label for='itemImg'>Link to Product Image: </label>
+                        <input type='text' name='itemImg' id='itemImg' value='{{editProd.itemImg}}'>
+                    </section>
+                    <section>
+                        <label for='itemCount'># of available products: </label>
+                        <input type='text' name='itemCount' id='itemCount' value='{{editProd.itemCount}}'>
+                    </section>
+                    </section>
+                    <button>Update Product</button>
+                </form>
+            </div>
+            <button class='shopAddShopForm'>Click to assign to your Shop</button>
+            <div class='addShopForm'>
+                <form action='/product/{{editProd.id}}/assignShop/' method='post'>
+                    {% csrf_token %}
+                    <label for='shop_id'>Chose the Shop: </label>
+                    <select name='shop_id'>
+                        {% for shop in ownerShops %}
+                            <option value='{{shop.id}}'>{{shop.shopName}}</option>
+                        {% endfor %}
+                    </select>
+                    <button>Add Shop</button>
+                </form>
+            </div>
+            <button class='showAddCatForm'>Click to assign Categories</button>
+            <div class='addCatForm'>
+                <form action='/product/{{editProd.id}}/assignCat/' method='post'>
+                    {% csrf_token %}
+                    <label for='category_id'>Select Categories</label>
+                    {% for cat in allCats %}
+                        <input type='checkbox' name='category_id', id='category_id' value='{{cat.id}}'>
+                        <label for='{{cat.id}}'>{{cat.catName}}</label>
+                    {% endfor %}
+                    <button>Add Category</button>
+                </form>
+            </div>
+        </div>
+        <a href='/product/{{editProd.id}}/deleteProd/'><button>Delete Product</button></a>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

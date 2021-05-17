@@ -44,19 +44,8 @@
                     </section>
                     <section>
                         <label for='itemCount'># of available products: </label>
-                        <input type='number' name='itemCount' id='itemCount'>
+                        <input type='text' name='itemCount' id='itemCount'>
                     </section>
-                    <section style="display: none;">
-                        <label for='user'>Shop Owner: {{user.firstName}} {{user.lastName}}</label>
-                        <input type='text' name='theOwner' id='theOwner' value='{{user.id}}'>
-                    </section>
-                    <section>
-                        <label for='shop'>Chose the Shop:</label>
-                        <select name='shop'>
-                            {% for shop in user.shops.all %}
-                            <option value='{{shop.id}}'>{{shop.shopName}}</option>
-                            {% endfor %}
-                        </select>
                     </section>
                     <!-- <section>
                         <label for='categories'>Select Categories: </label>
@@ -71,12 +60,14 @@
         </div>
         <div class='all'>
             {% for prod in prods %}
-                {{prod.itemName}}
-                {{prod.itemDescription}}
-                ${{prod.itemPrice}}
-                <img src='{{prod.itemImg}}' alt='{{prod.itemName}}' />
-                {{prod.itemCount}}
-            {{prod.categories}}
+                <div class='one'>
+                    <h2>{{prod.itemName}}</h2>
+                    <p>{{prod.itemDescription}}</p>
+                    <h4>Price: ${{prod.itemPrice}}</h4>
+                    <img src='{{prod.itemImg}}' alt='{{prod.itemName}}' />
+                    <h4>Available: {{prod.itemCount}}</h4>
+                    <a href='/product/{{prod.id}}/editNewProd/'>Edit Product</a>
+                </div>
             {% endfor %}
         </div>
     </div>

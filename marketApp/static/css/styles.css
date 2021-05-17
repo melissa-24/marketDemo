@@ -10,6 +10,9 @@
   justify-content: center;
   align-items: center;
 }
+img {
+  max-width: 100px;
+}
 body {
   background-color: #008000;
   display: flex;
@@ -83,6 +86,10 @@ body .main .all {
   align-items: flex-start;
   flex-wrap: wrap;
 }
+body .main .all button {
+  justify-self: center;
+  align-self: center;
+}
 body .main .all .one {
   display: flex;
   flex-direction: column;
@@ -93,7 +100,37 @@ body .main .all .one {
   margin: 1em;
   padding: 1em;
 }
-body .main .add {
+body .main .all .allProducts,
+body .main .all .allShops,
+body .main .all .allCats {
+  display: none;
+  background-color: #ffca0a67;
+  margin: 1em;
+}
+body .main .all .allProducts .all,
+body .main .all .allShops .all,
+body .main .all .allCats .all {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+body .main .all .allProducts .one,
+body .main .all .allShops .one,
+body .main .all .allCats .one {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffca0a67;
+  border: 3px groove #123812;
+  margin: 1em;
+  padding: 1em;
+}
+body .main .add,
+body .main .update {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -101,15 +138,37 @@ body .main .add {
   margin: 1em;
 }
 body .main .add .shopForm,
+body .main .update .shopForm,
 body .main .add .catForm,
-body .main .add .prodForm {
+body .main .update .catForm,
+body .main .add .prodForm,
+body .main .update .prodForm,
+body .main .add .updateProdForm,
+body .main .update .updateProdForm,
+body .main .add .updateProdForm,
+body .main .update .updateProdForm,
+body .main .add .addShopForm,
+body .main .update .addShopForm,
+body .main .add .addCatForm,
+body .main .update .addCatForm {
   display: none;
   background-color: #ffca0a67;
   margin: 1em;
 }
 body .main .add .shopForm form,
+body .main .update .shopForm form,
 body .main .add .catForm form,
-body .main .add .prodForm form {
+body .main .update .catForm form,
+body .main .add .prodForm form,
+body .main .update .prodForm form,
+body .main .add .updateProdForm form,
+body .main .update .updateProdForm form,
+body .main .add .updateProdForm form,
+body .main .update .updateProdForm form,
+body .main .add .addShopForm form,
+body .main .update .addShopForm form,
+body .main .add .addCatForm form,
+body .main .update .addCatForm form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,7 +176,37 @@ body .main .add .prodForm form {
   margin: 1em;
 }
 body .main .add .shopForm form section,
+body .main .update .shopForm form section,
 body .main .add .catForm form section,
-body .main .add .prodForm form section {
+body .main .update .catForm form section,
+body .main .add .prodForm form section,
+body .main .update .prodForm form section,
+body .main .add .updateProdForm form section,
+body .main .update .updateProdForm form section,
+body .main .add .updateProdForm form section,
+body .main .update .updateProdForm form section,
+body .main .add .addShopForm form section,
+body .main .update .addShopForm form section,
+body .main .add .addCatForm form section,
+body .main .update .addCatForm form section {
   margin: 0.5em;
+}
+body .main .user {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #0f460fbe;
+}
+body .main .user .section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
+}
+body .main .user .section img {
+  max-width: 300px;
+  border: 8px groove #ffca0a;
+  border-radius: 40%;
 }

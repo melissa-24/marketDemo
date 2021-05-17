@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>{{oneProd.itemName}}</title>
     {% load static %}
     <link rel='stylesheet' href="{% static 'css/styles.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
@@ -18,7 +18,17 @@
         </nav>
     </header>
     <div class='main'>
-
+        <h2>{{oneProd.itemName}}</h2>
+        <div class='user'>
+            <div class='section'>
+                <h4>Price: ${{oneProd.itemPrice}}</h4>
+                <p>Available: {{oneProd.itemCount}}</p>
+                <p>{{oneProd.itemDescription}}</p>
+            </div>
+            <div class='section'>
+                <img src='{{oneProd.itemImg}}' alt='{{oneProd.itemName}}' />
+            </div>
+        </div>
     </div>
     <footer>
         {% for foot in footer %}

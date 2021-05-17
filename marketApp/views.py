@@ -72,29 +72,32 @@ def logout(request):
 
 # -------User Dashboard Landing Page-------
 def dashboard(request):
+
     if 'user_id' not in request.session:
         return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
-    shops = Shop.objects.all().values()
     ownerShops = Shop.objects.filter(user_id=request.session['user_id'])
-    prods = Product.objects.all().values()
-    ownerProds = Product.objects.filter(theOwner_id=request.session['user_id'])
+    prods = Product.objects.filter(theOwner=request.session['user_id'])
+    ownerProds = Product.objects.filter(theOwner = user)
     # print(user.acct_id)
     if user.acct_id == 1:
         context = {
             'footer': FOOTER,
             'user': user,
             'allProd': Product.objects.all().values(),
+            'shops': Shop.objects.all().values(),
+            'cats': Category.objects.all().values(),
         }
-        return render(request, 'dashboard.html', context)
+        return render(request, 'userSide/dashboard.html', context)
     else:
         context = {
             'footer': FOOTER,
             'user': user,
             'ownerShops': ownerShops,
             'ownerProds': ownerProds,
+            'prods':prods,
         }
-        return render(request, 'ownerDash.html', context)
+        return render(request, 'ownerSide/ownerDash.html', context)
 
 # -------Create Shop Landing-------
 def shops(request):
@@ -108,7 +111,7 @@ def shops(request):
         'shops':shops,
         'users': User.objects.filter(acct_id=2),
     }
-    return render(request, 'shops.html', context)
+    return render(request, 'ownerSide/shops.html', context)
 
 # -------Create Shop Route-------
 def createShop(request):
@@ -119,7 +122,7 @@ def createShop(request):
         shopDescription=request.POST['shopDescription'],
         user_id=request.POST['user'],
     )
-    return redirect('/shops/')
+    return redirect('/shop/')
 
 # -------View Shop Landing Page-------
 def viewShop(request,shop_id):
@@ -134,7 +137,7 @@ def viewShop(request,shop_id):
         'prods': prods,
         'users': User.objects.filter(acct_id=2)
     }
-    return render(request, 'editShop.html', context)
+    return render(request, 'ownerSide/edit/editShop.html', context)
 
 # -------Update Shop Route-------
 def updateShop(request, shop_id):
@@ -153,15 +156,19 @@ def deleteShop(request, shop_id):
 
     return redirect('/dashboard/')
 
-# -------User Profile Landing Page-------
-def profile(request):
-    if 'user_id' not in request.session:
-        return redirect('/')
+# -------View Shop Items Landing-------
+def viewShopItems(request, shop_id):
     user = User.objects.get(id=request.session['user_id'])
+    oneShop = Shop.objects.get(id=shop_id)
+    prods = Product.objects.all().values()    
     context = {
-        'footer': FOOTER
+        'footer': FOOTER,
+        'user': user,
+        'oneShop': oneShop,
+        'prods':prods,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'userSide/userViewShopProd.html', context)
+    
 
 # -------Categories Landing Page-------
 def categories(request):
@@ -175,7 +182,7 @@ def categories(request):
         'cats': cats,
         'users': User.objects.filter(acct_id=2),
     }
-    return render(request, 'categories.html', context)
+    return render(request, 'ownerSide/categories.html', context)
 
 # -------Create Category Route-------
 def createCat(request):
@@ -186,6 +193,10 @@ def createCat(request):
         theUser_id=request.POST['theUser'],
     )
     return redirect('/category/')
+
+# -------View Category Items Landing-------
+def viewCatItems(request):
+    pass
 
 # -------Products Landing Page-------
 def products(request):
@@ -203,8 +214,7 @@ def products(request):
         'cats': cats,
         'users': User.objects.filter(acct_id=2),
     }
-    return render(request, 'products.html', context)
-    
+    return render(request, 'ownerSide/products.html', context)
 
 # -------Create Product Route-------
 def createProd(request):
@@ -214,29 +224,39 @@ def createProd(request):
         itemName=request.POST['itemName'],
         itemDescription=request.POST['itemDescription'],
         itemPrice=request.POST['itemPrice'],
-        itemImg=request.POST['itemPrice'],
-        itemCount=request.POST['itemPrice'],
-        theOwner_id=request.POST['theOwner'],
-        shop_id=request.POST['shop'],
+        itemImg=request.POST['itemImg'],
+        itemCount=request.POST['itemCount'],
     )
     return redirect('/product/')
 
-# -------View Product Landing Page-------
+# -------Edit Product Landing Page-------
 def viewProd(request, product_id):
     user = User.objects.get(id=request.session['user_id'])
+    ownerShops = Shop.objects.filter(user_id=request.session['user_id'])
     oneProd = Product.objects.get(id=product_id)
+    allCats = Category.objects.all().values()
     context = {
         'editProd': oneProd,
         'user': user,
+        'ownerShops':ownerShops,
+        'allCats': allCats,
         'users': User.objects.filter(acct_id=2)
     }
-    return render(request, 'editProducts.html', context)
+    return render(request, 'ownerSide/edit/editProducts.html', context)
 
-# -------Add Category to Product Route-------
-def addProdCat(request):
-    pass
+# -------User View One Product Landing-------
+def viewItem(request, product_id):
+    user = User.objects.get(id=request.session['user_id'])
+    oneProd = Product.objects.get(id=product_id)
+    context = {
+        'footer': FOOTER,
+        'user': user,
+        'oneProd': oneProd,
 
-# -------Update Product Route-------
+    }
+    return render(request, 'userSide/userViewProd.html', context)
+
+# -------Update Product Dashboard Route-------
 def updateProd(request, product_id):
     toUpdate = Product.objects.get(id=product_id)
     toUpdate.itemName = request.POST['itemName']
@@ -244,12 +264,62 @@ def updateProd(request, product_id):
     toUpdate.itemPrice = request.POST['itemPrice']
     toUpdate.itemImg = request.POST['itemImg']
     toUpdate.itemCount = request.POST['itemCount']
-    toUpdate.theOwner_id = request.POST['theOwner']
-    toUpdate.shop_id = request.POST['shop']
     toUpdate.save()
 
     return redirect('/dashboard/')
 
-# -------Delete Product Route-------
-def deleteProd(request):
-    pass
+# -------Delete Product Dashboard Route-------
+def deleteProd(request, product_id):
+    toDelete = Product.objects.get(id=product_id)
+    toDelete.delete()
+
+    return redirect('/dashboard/')
+
+# -------Add Shop to Product Route-------
+def assignShop(request, product_id):
+    product = Product.objects.get(id=product_id)
+    aShop = Shop.objects.get(id=request.POST['shop_id'])
+    product.shop.add(aShop)
+    return redirect('/dashboard/')
+
+# -------Add Category to Product Route-------
+def assignCat(request, product_id):
+    product = Product.objects.get(id=product_id)
+    cats = Category.objects.get(id=request.POST['category_id'])
+    product.categories.add(cats)
+    return redirect('/dashboard/')
+
+# -------User Profile Landing Page-------
+def profile(request):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'footer': FOOTER
+    }
+    return render(request, 'profile.html', context)
+
+# -------Edit New Product Landing-------
+def viewNewProd(request, product_id):
+    user = User.objects.get(id=request.session['user_id'])
+    oneProd = Product.objects.get(id=product_id)
+    ownerShops = Shop.objects.filter(user_id=request.session['user_id'])
+    context = {
+        'editProd': oneProd,
+        'user': user,
+        'ownerShops': ownerShops,
+        'users': User.objects.filter(acct_id=2)
+    }
+    return render(request, 'ownerSide/edit/assignProd.html', context)
+
+# -------Update New Product Route-------
+def updateNewProd(request, product_id):
+    toUpdate = Product.objects.get(id=product_id)
+    toUpdate.itemName = request.POST['itemName']
+    toUpdate.itemDescription = request.POST['itemDescription']
+    toUpdate.itemPrice = request.POST['itemPrice']
+    toUpdate.itemImg = request.POST['itemImg']
+    toUpdate.itemCount = request.POST['itemCount']
+    toUpdate.save()
+
+    return redirect('/product/')

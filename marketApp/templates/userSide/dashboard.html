@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/honeycomb.png' %}"/>
+</head>
+<body>
+    <header>
+        <h3>Welcome, {{user.firstName}} {{user.lastName}} to The Crafts Market Place</h3>
+        <nav>
+            <a href='/logout/'>Log Out</a>
+            <a href='/dashboard/'>Dashboard</a>
+        </nav>
+    </header>
+    <div class='main'>
+        <div class='all' style='flex-direction: column;'>
+            <button class='showAllProducts'>View All Products</button>
+            <div class='allProducts'>
+                <section class='all'>
+                    {% for prod in allProd %}
+                        <div class='one'>
+                            {{prod.itemName}}
+                            <a href='/product/{{prod.id}}/viewItem/'>View Product</a>
+                        </div>
+                    {% endfor %}
+                </section>
+            </div>
+        </div>
+        {% comment %}
+        <div class='all' style='flex-direction: column;'>
+            <button class='showAllShops'>View the Different Shops</button>
+            <div class='allShops'>
+                <section class='all'>
+                    {% for shop in shops %}
+                        <div class='one'>
+                            {{shop.shopName}}
+                            <a href='/shop/{{shop.id}}/viewShopItems/'>View the Shops Items</a>
+                        </div>
+                    {% endfor %}
+                </section>
+            </div>
+        </div>
+        <div class='all' style='flex-direction: column;'>
+            <button class='showAllCats'>View the Different Categories</button>
+            <div class='allCats'>
+                <section class='all'>
+                    {% for cat in cats %}
+                        <div class='one'>
+                            {{cat.catName}}
+                            <a href='/category/{{cat.id}}/viewCatItems/'>View the Category Items</a>
+                        </div>
+                    {% endfor %}
+                </section>
+            </div>
+        </div>
+        {% endcomment %}
+    </div>
+    <footer>
+        {% for foot in footer %}
+        <p>{{foot}}</p>
+        {% endfor %}
+        <a href='/admin/'><img src="{% static 'images/Capture.PNG' %}" /></a>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>
