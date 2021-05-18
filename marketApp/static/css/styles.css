@@ -48,6 +48,10 @@ body header nav a {
   border: 3px groove #ffca0a67;
   padding: 0.5em;
 }
+body header .messages {
+  background-color: #9b2323c9;
+  padding: 0.5em;
+}
 body header form {
   display: flex;
   flex-direction: column;

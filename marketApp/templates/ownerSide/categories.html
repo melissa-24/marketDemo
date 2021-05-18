@@ -19,6 +19,13 @@
             <a href='/category/'>Categories</a>
             <a href='/product/'>Products</a>
         </nav>
+        {% if messages %}
+        <section class='messages'>
+            {% for message in messages %}
+            <h3 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+            {% endfor %}
+        </section>
+        {% endif %}
     </header>
     <div class='main'>
         <div class='add'>

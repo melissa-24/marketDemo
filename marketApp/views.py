@@ -103,6 +103,11 @@ def dashboard(request):
 def shops(request):
     if 'user_id' not in request.session:
         return redirect('/')
+    errors = Shop.objects.validate(request.POST)
+    if errors:
+        for err in errors.values():
+            messages.error(request, err)
+        return redirect('/shop/')
     user = User.objects.get(id=request.session['user_id'])
     shops = Shop.objects.all().values()
     context = {
@@ -174,6 +179,11 @@ def viewShopItems(request, shop_id):
 def categories(request):
     if 'user_id' not in request.session:
         return redirect('/')
+    errors = Category.objects.validate(request.POST)
+    if errors:
+        for err in errors.values():
+            messages.error(request, err)
+        return redirect('/category/')
     user = User.objects.get(id=request.session['user_id'])
     cats = Category.objects.all().values()
     context = {
