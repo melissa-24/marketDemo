@@ -15,7 +15,8 @@ FOOTER = {
 # -------Main Landing page-------
 def index(request):
     context = {
-        'footer': FOOTER
+        'footer': FOOTER,
+        'accts': Acct.objects.all()
     }
     return render(request, "index.html", context)
 
@@ -66,13 +67,26 @@ def logout(request):
     request.session.clear()
     return redirect('/')
 
+# -------Hidden Create Acct Landing page-------
+def acct(request):
+    context = {
+        'accts': Acct.objects.all().values(),
+    }
+    return render(request, 'accts.html', context)
+
+# -------Hidden Create Acct Route-------
+
+def createAcct(request):
+    Acct.objects.create(
+        typeName=request.POST['typeName'],
+    )
+    return redirect('/accts/')
 
 
 # -----------------Private pages and routes-----------------
 
-# -------User Dashboard Landing Page-------
+# -------Dashboard Landing Page-------
 def dashboard(request):
-
     if 'user_id' not in request.session:
         return redirect('/')
     user = User.objects.get(id=request.session['user_id'])
@@ -99,15 +113,13 @@ def dashboard(request):
         }
         return render(request, 'ownerSide/ownerDash.html', context)
 
+
+# -----------------Owner Private pages and routes-----------------
+
 # -------Create Shop Landing-------
 def shops(request):
     if 'user_id' not in request.session:
         return redirect('/')
-    errors = Shop.objects.validate(request.POST)
-    if errors:
-        for err in errors.values():
-            messages.error(request, err)
-        return redirect('/shop/')
     user = User.objects.get(id=request.session['user_id'])
     shops = Shop.objects.all().values()
     context = {
@@ -122,6 +134,11 @@ def shops(request):
 def createShop(request):
     if 'user_id' not in request.session:
         return redirect('/')
+    errors = Shop.objects.validate(request.POST)
+    if errors:
+        for err in errors.values():
+            messages.error(request, err)
+        return redirect('/shop/')
     Shop.objects.create(
         shopName=request.POST['shopName'],
         shopDescription=request.POST['shopDescription'],
@@ -160,30 +177,11 @@ def deleteShop(request, shop_id):
     toDelete.delete()
 
     return redirect('/dashboard/')
-
-# -------View Shop Items Landing-------
-def viewShopItems(request, shop_id):
-    user = User.objects.get(id=request.session['user_id'])
-    oneShop = Shop.objects.get(id=shop_id)
-    prods = Product.objects.all().values()    
-    context = {
-        'footer': FOOTER,
-        'user': user,
-        'oneShop': oneShop,
-        'prods':prods,
-    }
-    return render(request, 'userSide/userViewShopProd.html', context)
     
-
 # -------Categories Landing Page-------
 def categories(request):
     if 'user_id' not in request.session:
         return redirect('/')
-    errors = Category.objects.validate(request.POST)
-    if errors:
-        for err in errors.values():
-            messages.error(request, err)
-        return redirect('/category/')
     user = User.objects.get(id=request.session['user_id'])
     cats = Category.objects.all().values()
     context = {
@@ -198,15 +196,16 @@ def categories(request):
 def createCat(request):
     if 'user_id' not in request.session:
         return redirect('/')
+    errors = Category.objects.validate(request.POST)
+    if errors:
+        for err in errors.values():
+            messages.error(request, err)
+        return redirect('/category/')
     Category.objects.create(
         catName=request.POST['catName'],
         theUser_id=request.POST['theUser'],
     )
     return redirect('/category/')
-
-# -------View Category Items Landing-------
-def viewCatItems(request):
-    pass
 
 # -------Products Landing Page-------
 def products(request):
@@ -253,19 +252,6 @@ def viewProd(request, product_id):
         'users': User.objects.filter(acct_id=2)
     }
     return render(request, 'ownerSide/edit/editProducts.html', context)
-
-# -------User View One Product Landing-------
-def viewItem(request, product_id):
-    user = User.objects.get(id=request.session['user_id'])
-    oneProd = Product.objects.get(id=product_id)
-    context = {
-        'footer': FOOTER,
-        'user': user,
-        'oneProd': oneProd,
-
-    }
-    return render(request, 'userSide/userViewProd.html', context)
-
 # -------Update Product Dashboard Route-------
 def updateProd(request, product_id):
     toUpdate = Product.objects.get(id=product_id)
@@ -333,3 +319,34 @@ def updateNewProd(request, product_id):
     toUpdate.save()
 
     return redirect('/product/')
+
+# -----------------Customer Private pages and routes-----------------
+
+# -------View Shop Items Landing-------
+def viewShopItems(request, shop_id):
+    user = User.objects.get(id=request.session['user_id'])
+    oneShop = Shop.objects.get(id=shop_id)
+    prods = Product.objects.all().values()    
+    context = {
+        'footer': FOOTER,
+        'user': user,
+        'oneShop': oneShop,
+        'prods':prods,
+    }
+    return render(request, 'userSide/userViewShopProd.html', context)
+
+# -------View Category Items Landing-------
+def viewCatItems(request):
+    pass
+
+# -------User View One Product Landing-------
+def viewItem(request, product_id):
+    user = User.objects.get(id=request.session['user_id'])
+    oneProd = Product.objects.get(id=product_id)
+    context = {
+        'footer': FOOTER,
+        'user': user,
+        'oneProd': oneProd,
+
+    }
+    return render(request, 'userSide/userViewProd.html', context)
